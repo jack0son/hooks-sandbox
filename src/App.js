@@ -2,7 +2,12 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import RaceRequests from './raceRequests'
+
 function App() {
+	return (
+		<RaceRequests/>
+	);
   return (
     <div className="App">
       <header className="App-header">
