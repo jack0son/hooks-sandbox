@@ -2,11 +2,11 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import RaceRequests from './raceRequests'
+import StreamDataRace from './StreamDataRace'
 
 function App() {
 	return (
-		<RaceRequests/>
+		<StreamDataRace/>
 	);
   return (
     <div className="App">

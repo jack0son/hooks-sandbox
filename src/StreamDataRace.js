@@ -14,7 +14,6 @@ const data = {
 }
 
 let counter = 0;
-
 async function getData(kind) {
 	const count = counter + 1;
 	++counter;
@@ -31,10 +30,10 @@ export default function RaceRequests() {
 	function reducer(state, action) {
 		//console.log(`Action: ${action.type}`);
 		switch(action.type) {
-			case 'front': {
+			case 'chunk': {
 				return {...state, data: [...action.payload, ...state.data]}
 			}
-			case 'back': {
+			case 'stream': {
 				return {...state, data: [...state.data, ...action.payload]}
 			}
 			default: {
@@ -44,19 +43,18 @@ export default function RaceRequests() {
 	}
 
 	useEffect(() => {
-		function getBack() {
-		}
-
-
 		function requestAllData() {
-			getData('front').then(data => dispatch({type: 'front', payload: data}));
-			getData('back').then(data => dispatch({type: 'back', payload: data}))
-				.then(() => getData('back').then(data => dispatch({type: 'back', payload: data})))
-				.then(() => getData('back').then(data => dispatch({type: 'back', payload: data})))
+			// Start stream and fetch of chunk simultaneously
+			getData('front').then(data => dispatch({type: 'chunk', payload: data}));
+
+			// Then periodically receive more stream data
+			getData('back').then(data => dispatch({type: 'stream', payload: data}))
+				.then(() => getData('back').then(data => dispatch({type: 'stream', payload: data})))
+				.then(() => getData('back').then(data => dispatch({type: 'stream', payload: data})))
 		}
 
 		requestAllData();
-	}, [])
+	}, [dispatch]) // Naughty
 
 	useEffect(() => {
 		setCumData(cumData => cumData.length > 0 ? 
